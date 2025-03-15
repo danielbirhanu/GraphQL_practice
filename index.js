@@ -1,7 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { typedefs } from "./schemas";
-import db from "./db"
+import { typeDefs } from "./schemas.js";
+import db from "./db.js"
 
 const resolvers = {
     Query: {
@@ -12,13 +12,17 @@ const resolvers = {
             return db.reviews
         },
         games(){
-            return db.authors
+            return db.games
         },
+        review(_, args){
+            return db.reviews.find((review) => review.id === args.id)
+        }
     }
 }
 
 const server = new ApolloServer({
-    typedefs
+    typeDefs,
+    resolvers
 })
 
 const { url } = await startStandaloneServer(server, {
