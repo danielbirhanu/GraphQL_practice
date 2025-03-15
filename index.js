@@ -1,8 +1,9 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
+import { typedefs } from "./schemas";
 
 const server = new ApolloServer({
-
+    typedefs
 })
 
 const { url } = await startStandaloneServer(server, {
