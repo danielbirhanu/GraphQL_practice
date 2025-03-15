@@ -19,12 +19,12 @@ const resolvers = {
     },
     game(_, args) {
       return db.games.find((game) => game.id === args.id);
-    }
+    },
   },
   Game: {
     reviews(parent) {
       return db.reviews.filter((review) => review.game_id === parent.id);
-    }
+    },
   },
   Review: {
     author(parent) {
@@ -32,22 +32,33 @@ const resolvers = {
     },
     game(parent) {
       return db.games.find((game) => game.id === parent.game_id);
-    }
+    },
   },
   Author: {
     reviews(parent) {
       return db.reviews.filter((review) => review.author_id === parent.id);
-    }
-  }
+    },
+  },
+  Mutation: {
+    deleteGame(_, args) {
+      db.games = db.games.filter((d) => d.id !== args.id);
+      return db.games;
+    },
+    addGame(_, args) {
+      let game = { ...args.game, id: Math.floor(Math.random() * 1000) };
+      db.games.push(game);
+      return game;
+    },
+  },
 };
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
 });
 
 const { url } = await startStandaloneServer(server, {
-  listen: { port: 4000 }
+  listen: { port: 4000 },
 });
 
 console.log(`Server listening on port 4000`);

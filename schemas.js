@@ -28,4 +28,14 @@ export const typeDefs = `#graphql
         games: [Game]
         game(id: ID!): Game # Added missing field
     }
+
+    type Mutation {
+        addGame(game: addGameInput): Game
+        deleteGame(id: ID): [Game]
+    }
+
+    input addGameInput {
+        title: String!
+        platform: [String!]!
+    }
 `;
